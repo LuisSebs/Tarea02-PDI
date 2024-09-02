@@ -3,7 +3,7 @@
 import argparse
 from utils.progress_bar import progress_bar
 from utils.colores import random_color, rojo, verde, azul, reset
-from PIL import Image
+from PIL import Image, ImageStat
 
 RUTA_TONOS_DE_COLORES = './tonos_de_colores'
 
@@ -40,9 +40,9 @@ def escalar(imagen: Image, factor: float, salida=None):
         imagen_reescalada.save(salida)
     return imagen_reescalada
 
-def color_promedio(imagen: Image):
+def color_promedio_sebas(imagen: Image):
     """
-        Regresa el color promedio de una imagen
+        Regresa el color promedio de una imagen. Implementacion propia
 
         Parameters :
         ------------
@@ -85,6 +85,13 @@ def color_promedio(imagen: Image):
 
     # Color promedio
     return (promedio_r, promedio_g, promedio_b)
+
+def color_promedio(imagen: Image):
+    """
+        Implementacion con Pillow
+    """
+    stat = ImageStat.Stat(imagen)
+    return tuple(map(int, stat.mean[:3]))
 
 def crea_imagen_recursiva(imagen: Image, salida, guardar_tonos=False, factor_medida=2, f=0.02):
     """
